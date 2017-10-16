@@ -51,7 +51,7 @@ pub use stream::{decode_all, encode_all, Decoder, Encoder};
 ///
 /// Returns the number of bytes written if the code represents success,
 /// or the error message otherwise.
-fn parse_code(code: libc::size_t) -> Result<usize, io::Error> {
+fn parse_code(code: libc::size_t) -> io::Result<usize> {
     if zstd_safe::is_error(code) == 0 {
         Ok(code as usize)
     } else {

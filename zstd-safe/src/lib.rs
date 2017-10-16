@@ -403,11 +403,13 @@ pub fn init_cstream(zcs: &mut CStream, compression_level: i32) -> usize {
 }
 
 
+#[derive(Debug)]
 pub struct InBuffer<'a> {
     pub src: &'a [u8],
     pub pos: usize,
 }
 
+#[derive(Debug)]
 pub struct OutBuffer<'a> {
     pub dst: &'a mut [u8],
     pub pos: usize,
@@ -437,6 +439,17 @@ impl<'a, 'b: 'a> DerefMut for OutBufferWrapper<'a, 'b> {
 }
 
 impl<'a> OutBuffer<'a> {
+
+    /// Returns a new `OutBuffer` around the given slice.
+    ///
+    /// With `pos = 0`.
+    pub fn around(dst: &'a mut [u8]) -> Self {
+        OutBuffer {
+            dst,
+            pos: 0,
+        }
+    }
+
     fn wrap<'b>(&'b mut self) -> OutBufferWrapper<'b, 'a> {
         OutBufferWrapper {
             buf: zstd_sys::ZSTD_outBuffer {
@@ -475,6 +488,16 @@ impl<'a, 'b: 'a> DerefMut for InBufferWrapper<'a, 'b> {
 }
 
 impl<'a> InBuffer<'a> {
+    /// Creates a new `InBuffer` around the given slice.
+    ///
+    /// With `pos = 0`.
+    pub fn around(src: &'a [u8]) -> Self {
+        InBuffer {
+            src,
+            pos: 0,
+        }
+    }
+
     fn wrap<'b>(&'b mut self) -> InBufferWrapper<'b, 'a> {
         InBufferWrapper {
             buf: zstd_sys::ZSTD_inBuffer {
