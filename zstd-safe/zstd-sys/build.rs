@@ -106,6 +106,7 @@ fn compile_zstd() {
     config.define("ZSTDLIB_VISIBILITY", Some(""));
     config.define("ZDICTLIB_VISIBILITY", Some(""));
     config.define("ZSTDERRORLIB_VISIBILITY", Some(""));
+    config.define("DYNAMIC_BMI2", Some("0"));
 
     set_pthread(&mut config);
     set_legacy(&mut config);
